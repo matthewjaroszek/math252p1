@@ -1,7 +1,10 @@
 from config import *
 
-#SIR(self, population, infected, transmission, duration)
-#SIR_VD(self, population, infected, transmission, duration, birth, death)
+#SIRS(self, population, infected, transmission, duration, immunity = 0)
+#SIRS_VD(self, population, infected, transmission, duration, birth, death, immunity = 0)
 
-test = SIR_VD(1000, 10, 0.3, 10, 0.01, 0.01)
+test_vd = SIRS_VD(1000, 10, 0.3, 10, 0.01, 0.01, 10)
+test = SIRS(1000, 10, 0.3, 10, 10)
+test.summarize()
+test.cycle(1)
 test.summarize()

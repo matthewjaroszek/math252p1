@@ -17,7 +17,7 @@ Ignore birth and death rate
 Eventually dies out  
 Existing pop is immmune  
 S' = -(bSI) / N  
-D' = (bSI) / N - yI  
+I' = (bSI) / N - yI  
 R' = R' = yI  
 
 SIR w/ Vital Dynamics  
@@ -25,13 +25,13 @@ Births add susceptible ppl to pop
 Epidemic is more sustained  
 Disease reach steday state as endemic  
 S' = uN - (bSI) / N - vS  
-D' = (bSI) / N - yI - vI  
+I' = (bSI) / N - yI - vI  
 R' = yI - vR  
 
 SIRS w/out Vital Dynamics  
 recovered individuals lose inmmunity and return to susceptible states  
 S' = -(bSI) / N + eR  
-D' = (bSI) / N - yI  
+I' = (bSI) / N - yI  
 R' = R' = yI - eR  
 
 SIRS w/ Vital Dynamics  
@@ -39,5 +39,5 @@ Births add susceptible ppl to pop
 Epidemic is more sustained  
 Disease reach steday state as endemic  
 S' = uN - (bSI) / N - vS +eR  
-D' = (bSI) / N - yI - vI  
+I' = (bSI) / N - yI - vI  
 R' = yI - vR - eR  
