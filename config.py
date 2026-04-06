@@ -22,8 +22,8 @@ class SIRS:
         else: print('')
         print('Populations')
         print(f'Susceptible: {round(self.susceptible, 2)}')
-        print(f'Infected: {self.infected}')
-        print(f'Recovered: {self.recovered}')
+        print(f'Infected: {round(self.infected, 2)}')
+        print(f'Recovered: {round(self.recovered, 2)}')
 
     def rates(self):
         print('\nRates')
