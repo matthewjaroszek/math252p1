@@ -13,24 +13,28 @@ class SIRS:
         self.immunity = immunity
         self.sirs = (immunity != 0)
 
-    def summarize(self, new_line = True):
+    def populations(self):
         print('Populations')
-        print(f'Current pupulation: {self.population}')
-        print(f'Currently susceptible: {self.susceptible}')
-        print(f'Currently infected: {self.infected}')
-        print(f'Currently recovered: {self.recovered}')
+        print(f'Susceptible: {self.susceptible}')
+        print(f'Infected: {self.infected}')
+        print(f'Recovered: {self.recovered}')
+
+    def rates(self):
         print('\nRates')
         print(f'Infectious: {self.transmission}')
         print(f'Recovery: {self.recovery}')
         if (self.sirs):
             print(f'Immunity: {self.immunity}')
-        if (new_line):
-            print('')
+
+    def summarize(self):
+        self.populations()
+        self.rates()
     
     def delta_susceptible(self):
         return (-1 * self.transmission * self.susceptible * self.infected) / self.population + (self.immunity * self.recovered)
     
     def delta_infected(self):
+        print('-s: ', (-1 * self.delta_susceptible()), ' eI: ', (self.immunity * self.infected))
         return (-1 * self.delta_susceptible()) - (self.immunity * self.infected)
     
     def delta_recovered(self):
@@ -39,7 +43,7 @@ class SIRS:
     def cycle(self, cycles = 1):
         print()
         for _ in range(cycles):
-            self.susceptible, self.infected, self.recovered = self.delta_susceptible, self.delta_infected, self.delta_recovered
+            self.susceptible, self.infected, self.recovered = self.susceptible + self.delta_susceptible(), self.infected + self.delta_infected(), self.recovered + self.delta_recovered()
         
 
 class SIRS_VD(SIRS):
@@ -49,10 +53,9 @@ class SIRS_VD(SIRS):
         self.death = death
     
     def summarize(self):
-        super().summarize(False)
+        super().summarize()
         print(f'\bBirth: {self.birth}')
         print(f'Death: {self.death}')
-        print('')
 
     def delta_susceptible(self):
         return (self.birth * self.population) + super().delta_susceptible() - (self.death * self.susceptible)
@@ -61,4 +64,4 @@ class SIRS_VD(SIRS):
         return super().delta_infected() - (self.death * self.infected)
 
     def delta_recovered(self):
-        return super().delta_recovered - (self.death * self.recovered)
+        return super().delta_recovered() - (self.death * self.recovered)
