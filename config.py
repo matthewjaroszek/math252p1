@@ -24,6 +24,7 @@ class SIRS:
         print(f'Susceptible: {round(self.susceptible, 2)}')
         print(f'Infected: {round(self.infected, 2)}')
         print(f'Recovered: {round(self.recovered, 2)}')
+        print(f'Population == {self.population}: {(round(self.population, 2)) == (round(self.susceptible + self.infected + self.recovered, 2))}')
 
     def rates(self):
         print('\nRates')
@@ -37,13 +38,13 @@ class SIRS:
         self.rates()
     
     def delta_susceptible(self):
-        return (-1 * self.transmission * self.susceptible * self.infected) / self.population + (self.immunity * self.recovered)
+        return ((-1 * self.transmission * self.susceptible * self.infected) / self.population) + (self.immunity * self.recovered)
     
     def delta_infected(self):
-        return (-1 * self.delta_susceptible()) - (self.immunity * self.infected)
+        return ((self.transmission * self.susceptible * self.infected) / self.population) - (self.recovery * self.infected)
     
     def delta_recovered(self):
-        return self.immunity * self.infected
+        return (self.recovery * self.infected) - (self.immunity * self.recovered)
     
     def cycle(self, cycles = 1):
         for _ in range(cycles):
