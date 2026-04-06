@@ -1,6 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+#global x
+x = True
+
 class SIRS:
     def __init__(self, population, infected, transmission, duration, immunity = 0):
         self.population = population
@@ -14,8 +17,13 @@ class SIRS:
         self.sirs = (immunity != 0)
 
     def populations(self):
+        global x
+        if (x):
+            x = False
+        else:
+            print('')
         print('Populations')
-        print(f'Susceptible: {self.susceptible}')
+        print(f'Susceptible: {round(self.susceptible, 2)}')
         print(f'Infected: {self.infected}')
         print(f'Recovered: {self.recovered}')
 
@@ -34,14 +42,12 @@ class SIRS:
         return (-1 * self.transmission * self.susceptible * self.infected) / self.population + (self.immunity * self.recovered)
     
     def delta_infected(self):
-        print('-s: ', (-1 * self.delta_susceptible()), ' eI: ', (self.immunity * self.infected))
         return (-1 * self.delta_susceptible()) - (self.immunity * self.infected)
     
     def delta_recovered(self):
         return self.immunity * self.infected
     
     def cycle(self, cycles = 1):
-        print()
         for _ in range(cycles):
             self.susceptible, self.infected, self.recovered = self.susceptible + self.delta_susceptible(), self.infected + self.delta_infected(), self.recovered + self.delta_recovered()
         
@@ -54,7 +60,7 @@ class SIRS_VD(SIRS):
     
     def summarize(self):
         super().summarize()
-        print(f'\bBirth: {self.birth}')
+        print(f'Birth: {self.birth}')
         print(f'Death: {self.death}')
 
     def delta_susceptible(self):
