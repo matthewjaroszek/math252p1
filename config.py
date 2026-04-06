@@ -18,10 +18,8 @@ class SIRS:
 
     def populations(self):
         global x
-        if (x):
-            x = False
-        else:
-            print('')
+        print('') if x else x = False
+        
         print('Populations')
         print(f'Susceptible: {round(self.susceptible, 2)}')
         print(f'Infected: {self.infected}')
