@@ -3,25 +3,22 @@ import matplotlib.pyplot as plt
 
 x = True
 
-class SIRS_VD:
-    def __init__(self, population, infected, transmission, duration, birth, death, immunity):
+class SIRS:
+    def __init__(self, population, infected, transmission, duration, immunity = 0):
         self.population = population
         self.infected = infected
         self.transmission = transmission
         self.duration = duration
         self.recovery = 1 / self.duration
-        self.birth = birth
-        self.death = death
         self.susceptible = population - infected
         self.recovered = 0
         self.immunity = immunity
         self.sirs = (immunity != 0)
-        self.vd = (birth != 0) and (death != 0)
 
     def populations(self):
         global x
         if (x): x = False
-        else: print('')
+        else: print('v1')
         print('Populations')
         print(f'Population: {round(self.population, 2)}')
         print(f'Susceptible: {round(self.susceptible, 2)}')
@@ -32,9 +29,8 @@ class SIRS_VD:
         print('\nRates')
         print(f'Infectious: {self.transmission}')
         print(f'Recovery: {self.recovery}')
-        if (self.sirs): print(f'Immunity: {self.immunity}')
-        if (self.vd): print(f'Birth: {self.birth}')
-        if (self.vd): print(f'Death: {self.death}')
+        if (self.sirs):
+            print(f'Immunity: {self.immunity}')
 
     def summarize(self):
         self.populations()
@@ -49,21 +45,27 @@ class SIRS_VD:
     def delta_recovered(self):
         return (self.recovery * self.infected) - (self.immunity * self.recovered)
     
-    def delta_population(self):
-        return self.birth - self.death
-    
     def cycle(self, cycles = 1):
         for _ in range(cycles):
-            self.susceptible, self.infected, self.recovered, self.population = self.susceptible + self.delta_susceptible(), self.infected + self.delta_infected(), self.recovered + self.delta_recovered(), self.population + self.delta_population()
+            self.susceptible, self.infected, self.recovered = self.susceptible + self.delta_susceptible(), self.infected + self.delta_infected(), self.recovered + self.delta_recovered()
+        
 
-class SIRS(SIRS_VD):
-    def __init__(self, population, infected, transmission, duration, immunity):
-        super().__init__(population, infected, transmission, duration, 0, 0, immunity)
+class SIRS_VD(SIRS):
+    def __init__(self, population, infected, transmission, duration, birth, death, immunity = 0):
+        super().__init__(population, infected, transmission, duration, immunity)
+        self.birth = birth
+        self.death = death
+    
+    def summarize(self):
+        super().summarize()
+        print(f'Birth: {self.birth}')
+        print(f'Death: {self.death}')
 
-class SIR_VD(SIRS_VD):
-    def __init__(self, population, infected, transmission, duration, birth, death):
-        super().__init__(population, infected, transmission, duration, birth, death, 0)
+    def delta_susceptible(self):
+        return (self.birth * self.population) + super().delta_susceptible() - (self.death * self.susceptible)
 
-class SIR(SIRS_VD):
-    def __init__(self, population, infected, transmission, duration):
-        super().__init__(population, infected, transmission, duration, 0, 0, 0)
+    def delta_infected(self):
+        return super().delta_infected() - (self.death * self.infected)
+
+    def delta_recovered(self):
+        return super().delta_recovered() - (self.death * self.recovered)

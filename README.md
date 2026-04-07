@@ -41,3 +41,9 @@ Disease reach steday state as endemic
 S' = uN - (bSI) / N - vS +eR  
 I' = (bSI) / N - yI - vI  
 R' = yI - vR - eR  
+
+Class Calls  
+#SIR(population, infected, transmission, duration)  
+#SIR_VD(population, infected, transmission, duration, birth, death)  
+#SIRS(population, infected, transmission, duration, immunity)  
+#SIRS_VD(population, infected, transmission, duration, birth, death, immunity)  
